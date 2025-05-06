@@ -33,7 +33,23 @@ class Audit_trail_controller extends CI_Controller
                 'Conditions' => 'conditions',
             ]);
             
+            $filters = json_decode($this->input->get('filters', true), true);
+$createdAtFrom = $filters['created_at_from'] ?? null;
+$createdAtTo = $filters['created_at_to'] ?? null;
+
+if ($createdAtFrom) {
+    $from = date('Y-m-d H:i:s', strtotime($createdAtFrom));
+    $this->db->where('created_at >=', $from);
+}
+
+if ($createdAtTo) {
+    $to = date('Y-m-d H:i:s', strtotime($createdAtTo));
+    $this->db->where('created_at <=', $to);
+}
+
             
+            
+
             // Handle export parameters
             $export = $this->input->get('export');
             $exportType = $this->input->get('exportType') ?? 'csv';

@@ -28,11 +28,22 @@ const filters = ref({
   table_name: { value: '', matchMode: 'contains' },
   event: { value: '', matchMode: 'contains' },
   ip_address: { value: '', matchMode: 'contains' },
-  created_at_from: { value: '', matchMode: 'contains' },
-  created_at_to: { value: '', matchMode: 'contains' },
-
+  created_at: { value: '', matchMode: 'contains' },
 })
 
+// Add a function to clear all filter fields
+const clearFilters = () => {
+  filters.value.global.value = ''
+  filters.value.user_id.value = ''
+  filters.value.table_name.value = ''
+  filters.value.event.value = ''
+  filters.value.ip_address.value = ''
+  filters.value.created_at.value = ''
+  
+  // After clearing filters, fetch data again
+  page.value = 0
+  fetchData()
+}
 
 const globalFilterFields = ['user_id', 'table_name', 'event', 'ip_address', 'created_at']
 const multiSortMeta = ref([])
@@ -83,6 +94,10 @@ watch(() => filters.value.event.value, () => {
   fetchData()
 })
 watch(() => filters.value.ip_address.value, () => {
+  page.value = 0
+  fetchData()
+})
+watch(() => filters.value.created_at.value, () => {
   page.value = 0
   fetchData()
 })
@@ -219,11 +234,15 @@ onMounted(() => {
           <InputText v-model="filters.table_name.value" placeholder="Filter by Table Name" class="p-inputtext-sm" />
           <InputText v-model="filters.event.value" placeholder="Filter by Event" class="p-inputtext-sm" />
           <InputText v-model="filters.ip_address.value" placeholder="Filter by IP" class="p-inputtext-sm" />
-          <InputText
-            v-model="filters.created_at_from.value"
-            placeholder="Filter by Created At "
-            class="p-inputtext-sm"/>
-          
+          <InputText v-model="filters.created_at.value" placeholder="Filter by Created At" class="p-inputtext-sm" />
+        </div>
+        <div class="flex justify-end mt-4">
+          <Button 
+            label="Clear Filters" 
+            icon="pi pi-times" 
+            @click="clearFilters" 
+            class="p-button-outlined p-button-danger p-button-sm"
+          />
         </div>
       </AccordionTab>
     </Accordion>
