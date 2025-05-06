@@ -32,7 +32,8 @@ class Audit_trail_controller extends CI_Controller
                 'Created At' => 'created_at',
                 'Conditions' => 'conditions',
             ]);
-    
+            
+            
             // Handle export parameters
             $export = $this->input->get('export');
             $exportType = $this->input->get('exportType') ?? 'csv';
