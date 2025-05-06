@@ -44,6 +44,8 @@ const fetchData = async () => {
     multiSortMeta: JSON.stringify(multiSortMeta.value)
   }
 
+
+
   try {
     const { data } = await axios.get('/api/v1/get/audit_trails', { params })
     records.value = data.data
